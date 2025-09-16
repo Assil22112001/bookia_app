@@ -2,6 +2,7 @@ import 'package:bookia_app/core/theme/app_colors.dart';
 import 'package:bookia_app/core/widgets/custom_app_bar.dart';
 import 'package:bookia_app/core/widgets/custom_bottom.dart';
 import 'package:bookia_app/core/widgets/custom_text_form_field.dart';
+import 'package:bookia_app/feature/auth/presentation/ui/login/forget_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -34,10 +35,21 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 13),
               Align(
                 alignment: Alignment.centerRight,
-                child: Text(
-                  "Forgot Password?",
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ForgetPasswordScreen(),
+                      ),
+                    );
+                  },
 
-                  style: TextStyle(color: AppColors.darkcolor),
+                  child: Text(
+                    "Forgot Password?",
+
+                    style: TextStyle(color: AppColors.darkcolor),
+                  ),
                 ),
               ),
               SizedBox(height: 30),
