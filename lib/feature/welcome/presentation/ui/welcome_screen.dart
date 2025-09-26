@@ -1,8 +1,10 @@
 import 'package:bookia_app/core/theme/app_colors.dart';
 import 'package:bookia_app/core/widgets/custom_bottom.dart';
+import 'package:bookia_app/feature/auth/presentation/cubit/cubit/auth_cubit.dart';
 import 'package:bookia_app/feature/auth/presentation/ui/login/login_screen.dart';
 import 'package:bookia_app/feature/auth/presentation/ui/register/register_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -40,7 +42,12 @@ class WelcomeScreen extends StatelessWidget {
                   ontap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider(
+                          create: (context) => AuthCubit(),
+                          child: LoginScreen(),
+                        ),
+                      ),
                     );
                   },
                   title: "login",

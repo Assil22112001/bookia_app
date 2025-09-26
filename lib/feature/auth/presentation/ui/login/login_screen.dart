@@ -1,14 +1,25 @@
+
 import 'package:bookia_app/core/theme/app_colors.dart';
 import 'package:bookia_app/core/widgets/custom_app_bar.dart';
 import 'package:bookia_app/core/widgets/custom_bottom.dart';
 import 'package:bookia_app/core/widgets/custom_text_form_field.dart';
+import 'package:bookia_app/feature/auth/home/presentation/ui/home_screen.dart';
+import 'package:bookia_app/feature/auth/presentation/cubit/cubit/auth_cubit.dart';
 import 'package:bookia_app/feature/auth/presentation/ui/login/forget_password_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController passwordcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,9 +37,13 @@ class LoginScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 30),
               ),
               SizedBox(height: 32),
-              CustomTextFormField(hintText: "Enter Your Email"),
+              CustomTextFormField(
+                controller: emailcontroller,
+                hintText: "Enter Your Email",
+              ),
               SizedBox(height: 15),
               CustomTextFormField(
+                controller: passwordcontroller,
                 hintText: "Enter Your Password",
                 isPassword: true,
               ),
@@ -53,7 +68,38 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 30),
-              CustomBottom(title: "login"),
+              BlocListener<AuthCubit, AuthState>(
+                listener: (context, state) {
+                  if (state is LoginLoadingState) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => CircularProgressIndicator(),
+                    );
+                  } else if (state is LoginErrorState) {
+                    Navigator.pop(context);
+                    showDialog(
+                      context: context,
+                      builder: (context) =>
+                          AlertDialog(content: Text(state.errorMessage)),
+                    );
+                  } else if (state is LoginSuccessState) {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                      (e) => false,
+                    );
+                  }
+                },
+                child: CustomBottom(
+                  title: "login",
+                  ontap: () {
+                    context.read<AuthCubit>().login(
+                      email: emailcontroller.text,
+                      password: passwordcontroller.text,
+                    );
+                  },
+                ),
+              ),
               SizedBox(height: 34),
               Row(
                 children: [
