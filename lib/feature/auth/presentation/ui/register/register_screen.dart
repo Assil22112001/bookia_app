@@ -80,23 +80,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   builder: (_) => const Center(child: CircularProgressIndicator()),
                 );
               } else if (state is RegisterErrorState) {
-                if (Navigator.canPop(context)) Navigator.pop(context); // اقفل اللودينج
+                if (Navigator.canPop(context)) Navigator.pop(context); 
                 showDialog(
                   context: context,
                   builder: (_) => AlertDialog(content: Text(state.errorMessage)),
                 );
               } else if (state is RegisterSuccessState) {
-                if (Navigator.canPop(context)) Navigator.pop(context); // اقفل اللودينج
+                if (Navigator.canPop(context)) Navigator.pop(context); 
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('تم إنشاء الحساب بنجاح')),
                 );
 
-                // ارجع للـ LoginScreen وأغلق كل الروتز
+
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (_) => BlocProvider.value(
-                      value: context.read<AuthCubit>(), // مرّر نفس AuthCubit
+                      value: context.read<AuthCubit>(), 
                       child: const LoginScreen(),
                     ),
                   ),
